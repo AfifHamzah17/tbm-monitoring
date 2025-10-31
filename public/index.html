@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PTPN TBM 3D Monitoring - Kebun Silau Dunia</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv='imagetoolbar' content='no'/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style type="text/css"> 
+        v\:* {behavior:url(#default#VML);}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1000;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .navbar-brand i {
+            margin-right: 10px;
+            color: #27ae60;
+        }
+        
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .navbar-item {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .navbar-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .navbar-item.active {
+            background: #27ae60;
+        }
+        
+        /* Main Content */
+        .main-container {
+            height: calc(100vh - 60px);
+            position: relative;
+        }
+        
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        
+        /* Info Panel */
+        .info-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            z-index: 100;
+            min-width: 250px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .info-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-panel h3 i {
+            color: #27ae60;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 8px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .info-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .info-value {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        /* Controls Panel */
+        .controls-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .controls-panel h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .controls-panel h4 i {
+            color: #3498db;
+        }
+        
+        .control-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px 16px;
+            margin: 8px 0;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .control-btn:active {
+            transform: translateY(0);
+        }
+        
+        .control-btn.success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+        
+        .control-btn.success:hover {
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .control-btn.warning {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+        }
+        
+        .control-btn.warning:hover {
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        /* Three Container */
+        #three-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+        
+        /* Status Indicator */
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background: #27ae60;
+            box-shadow: 0 0 10px rgba(39, 174, 96, 0.5);
+        }
+        
+        .status-offline {
+            background: #e74c3c;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+        }
+        
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Custom styles for centroid label */
+        .centroid-label {
+            position: absolute;
+            background-color: white;
+            color: #2c3e50;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+            border: 2px solid #fff;
+        }
+        
+        .centroid-label::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+    </style>
+    
+    <!-- Load Google Maps API -->
+    <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyB75X3CyuZU1EzL0s8IpuZ9cf597RrKDGk'></script>
+    <!-- Load Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loadingSpinner">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <i class="fas fa-leaf"></i>
+            PTPN 4 Regional 1 - Kebun Silau Dunia
+        </div>
+        <div class="navbar-menu">
+            <a href="#" class="navbar-item active">
+                <i class="fas fa-map"></i>
+                Peta
+            </a>
+            <a href="#" class="navbar-item">
+                <i class="fas fa-chart-bar"></i>
+                Analitik
+            </a>
+            <a href="#" class="navbar-item">
+                <i class="fas fa-database"></i>
+                Data
+            </a>
+            <a href="#" class="navbar-item">
+                <i class="fas fa-cog"></i>
+                Pengaturan
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <div id="map"></div>
+        <div id="three-container"></div>
+        
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <h3>
+                <i class="fas fa-info-circle"></i>
+                Informasi Sistem
+            </h3>
+            <div class="info-item">
+                <span class="info-label">Status:</span>
+                <span class="info-value">
+                    <span class="status-indicator status-online"></span>
+                    Online
+                </span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Zoom Level:</span>
+                <span class="info-value" id="zoom">10</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Visible Tiles:</span>
+                <span class="info-value" id="tile-count">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Visible Trees:</span>
+                <span class="info-value" id="tree-count">0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Last Update:</span>
+                <span class="info-value" id="last-update">--:--:--</span>
+            </div>
+        </div>
+        
+        <!-- Controls Panel -->
+        <!-- <div class="controls-panel">
+            <h4>
+                <i class="fas fa-gamepad"></i>
+                Kontrol Visualisasi
+            </h4>
+            <div class="tooltip">
+                <button class="control-btn" id="toggle-3d">
+                    <i class="fas fa-cube"></i>
+                    Toggle 3D View
+                </button>
+                <span class="tooltiptext">Beralih antara tampilan 2D dan 3D</span>
+            </div>
+            <div class="tooltip">
+                <button class="control-btn success" id="toggle-trees">
+                    <i class="fas fa-tree"></i>
+                    Toggle Pohon
+                </button>
+                <span class="tooltiptext">Tampilkan/sembunyikan pohon 3D</span>
+            </div>
+            <div class="tooltip">
+                <button class="control-btn warning" id="animate-growth">
+                    <i class="fas fa-seedling"></i>
+                    Animasi Pertumbuhan
+                </button>
+                <span class="tooltiptext">Jalankan animasi pertumbuhan pohon</span>
+            </div>
+            <div class="tooltip">
+                <button class="control-btn" id="reset-view">
+                    <i class="fas fa-home"></i>
+                    Reset View
+                </button>
+                <span class="tooltiptext">Kembalikan ke tampilan awal</span>
+            </div>
+        </div> -->
+    </div>
+
+    <script>
+        //<![CDATA[
+        /*
+         * Constants for given map
+         */
+        var mapBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(3.224203180825914, 98.90907309153492),
+            new google.maps.LatLng(3.3203997259626465, 98.99210539797713));
+        var mapMinZoom = 0;
+        var mapMaxZoom = 19;
+        var initialOpacity = 0.75 * 100;
+        var map;
+        var overlay;
+        var threeManager;
+        var centroidMarker;
+
+        // Show loading spinner
+        document.getElementById('loadingSpinner').style.display = 'block';
+
+        /*
+         * Full-screen Window Resize
+         */
+        function getWindowHeight() {
+            if (self.innerHeight) return self.innerHeight;
+            if (document.documentElement && document.documentElement.clientHeight)
+                return document.documentElement.clientHeight;
+            if (document.body) return document.body.clientHeight;
+            return 0;
+        }
+
+        function getWindowWidth() {
+            if (self.innerWidth) return self.innerWidth;
+            if (document.documentElement && document.documentElement.clientWidth)
+                return document.documentElement.clientWidth;
+            if (document.body) return document.body.clientWidth;
+            return 0;
+        }
+
+        function resize() {
+            var map = document.getElementById("map");
+            map.style.height = (getWindowHeight() - 60) + "px";
+            map.style.width = (getWindowWidth()) + "px";
+        }
+
+        // getZoomByBounds(): adapted from https://stackoverflow.com/a/9982152
+        function getZoomByBounds(map, bounds) {
+            var MAX_ZOOM = 21;
+            var MIN_ZOOM = 0;
+
+            var ne = map.getProjection().fromLatLngToPoint(bounds.getNorthEast());
+            var sw = map.getProjection().fromLatLngToPoint(bounds.getSouthWest());
+
+            var worldCoordWidth = Math.abs(ne.x - sw.x);
+            var worldCoordHeight = Math.abs(ne.y - sw.y);
+            //Fit padding in pixels
+            var FIT_PAD = 40;
+            for (var zoom = MAX_ZOOM; zoom >= MIN_ZOOM; --zoom) {
+                if (worldCoordWidth * (1 << zoom) + 2 * FIT_PAD < map.getDiv().offsetWidth &&
+                    worldCoordHeight * (1 << zoom) + 2 * FIT_PAD < map.getDiv().offsetHeight) {
+                    if (zoom > mapMaxZoom)
+                        zoom = mapMaxZoom;
+                    return zoom;
+                }
+            }
+            return 0;
+        }
+
+        function fromMercatorPixelToLatLng(pixel, zoom) {
+            var CST = 6378137 * Math.PI;
+            var res = 2 * CST / 256 / Math.pow(2, zoom);
+            var X = -CST + pixel.x * res;
+            var Y = CST - pixel.y * res;
+            var lon = X / CST * 180;
+            var lat = Math.atan(Math.sinh(Y / CST * Math.PI)) / Math.PI * 180;
+            return new google.maps.LatLng(lat, lon);
+        }
+
+        var OPACITY_MAX_PIXELS = 57; // Width of opacity control image
+
+        function createOpacityControl(map, opacity) {
+            var sliderImageUrl = "https://gdal.org/resources/gdal2tiles/opacity-slider.png";
+
+            // Create main div to hold the control.
+            var opacityDiv = document.createElement('DIV');
+            var opacityDivMargin = 5;
+            opacityDiv.setAttribute("style", "margin:" + opacityDivMargin + "px;overflow-x:hidden;overflow-y:hidden;background:url(" + sliderImageUrl + ") no-repeat;width:71px;height:21px;cursor:pointer;");
+
+            // Create knob
+            var opacityKnobDiv = document.createElement('DIV');
+            opacityKnobDiv.setAttribute("style", "padding:0;margin:0;overflow-x:hidden;overflow-y:hidden;background:url(" + sliderImageUrl + ") no-repeat -71px 0;width:14px;height:21px;");
+            opacityDiv.appendChild(opacityKnobDiv);
+
+            var opacityCtrlKnob = new ExtDraggableObject(opacityKnobDiv, {
+                restrictY: true,
+                container: opacityDiv
+            });
+
+            google.maps.event.addListener(opacityCtrlKnob, "dragend", function() {
+                setOpacity(opacityCtrlKnob.valueX());
+            });
+
+            google.maps.event.addDomListener(opacityDiv, "click", function(e) {
+                var left = this.getBoundingClientRect().left;
+                var x = e.pageX - left - opacityDivMargin;
+                opacityCtrlKnob.setValueX(x);
+                setOpacity(x);
+            });
+
+            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(opacityDiv);
+
+            // Set initial value
+            var initialValue = OPACITY_MAX_PIXELS / (100 / opacity);
+            opacityCtrlKnob.setValueX(initialValue);
+            setOpacity(initialValue);
+        }
+
+        function setOpacity(pixelX) {
+            // Range = 0 to OPACITY_MAX_PIXELS
+            var value = (100 / OPACITY_MAX_PIXELS) * pixelX;
+            if (value < 0) value = 0;
+            if (value == 0) {
+                if (overlay.visible == true) {
+                    overlay.hide();
+                }
+            } else {
+                overlay.setOpacity(value);
+                if (overlay.visible == false) {
+                    overlay.show();
+                }
+            }
+        }
+
+        // Beginning of https://github.com/gavinharriss/google-maps-v3-opacity-control/blob/master/ExtDraggableObject.js
+        function ExtDraggableObject(src, opt_drag) {
+            var me = this;
+            var event_ = (window["GEvent"] || google.maps.Event || google.maps.event);
+            var opt_drag_ = opt_drag || {};
+            var draggingCursor_ = opt_drag_.draggingCursor || "default";
+            var draggableCursor_ = opt_drag_.draggableCursor || "default";
+            var moving_ = false, preventDefault_;
+            var currentX_, currentY_, formerY_, formerX_, formerMouseX_, formerMouseY_;
+            var top_, left_;
+            var mouseDownEvent_, mouseUpEvent_, mouseMoveEvent_;
+            var originalX_, originalY_;
+            var halfIntervalX_ = Math.round(opt_drag_.intervalX / 2);
+            var halfIntervalY_ = Math.round(opt_drag_.intervalY / 2);
+            var target_ = src.setCapture ? src : document;
+
+            if (typeof opt_drag_.intervalX !== "number") {
+                opt_drag_.intervalX = 1;
+            }
+            if (typeof opt_drag_.intervalY !== "number") {
+                opt_drag_.intervalY = 1;
+            }
+            if (typeof opt_drag_.toleranceX !== "number") {
+                opt_drag_.toleranceX = Infinity;
+            }
+            if (typeof opt_drag_.toleranceY !== "number") {
+                opt_drag_.toleranceY = Infinity;
+            }
+
+            mouseDownEvent_ = event_.addDomListener(src, "mousedown", mouseDown_);
+            mouseUpEvent_ = event_.addDomListener(target_, "mouseup", mouseUp_);
+
+            setCursor_(false);
+            if (opt_drag_.container) {
+
+            }
+            src.style.position = "absolute";
+            opt_drag_.left = opt_drag_.left || src.offsetLeft;
+            opt_drag_.top = opt_drag_.top || src.offsetTop;
+            opt_drag_.interval = opt_drag_.interval || 1;
+            moveTo_(opt_drag_.left, opt_drag_.top, false);
+
+            function setCursor_(a) {
+                if (a) {
+                    src.style.cursor = draggingCursor_;
+                } else {
+                    src.style.cursor = draggableCursor_;
+                }
+            }
+
+            function moveTo_(x, y, prevent) {
+                var roundedIntervalX_, roundedIntervalY_;
+                left_ = Math.round(x);
+                top_ = Math.round(y);
+                if (opt_drag_.intervalX > 1) {
+                    roundedIntervalX_ = Math.round(left_ % opt_drag_.intervalX);
+                    left_ = (roundedIntervalX_ < halfIntervalX_) ? (left_ - roundedIntervalX_) : (left_ + (opt_drag_.intervalX - roundedIntervalX_));
+                }
+                if (opt_drag_.intervalY > 1) {
+                    roundedIntervalY_ = Math.round(top_ % opt_drag_.intervalY);
+                    top_ = (roundedIntervalY_ < halfIntervalY_) ? (top_ - roundedIntervalY_) : (top_ + (opt_drag_.intervalY - roundedIntervalY_));
+                }
+                if (opt_drag_.container && opt_drag_.container.offsetWidth) {
+                    left_ = Math.max(0, Math.min(left_, opt_drag_.container.offsetWidth - src.offsetWidth));
+                    top_ = Math.max(0, Math.min(top_, opt_drag_.container.offsetHeight - src.offsetHeight));
+                }
+                if (typeof currentX_ === "number") {
+                    if (((left_ - currentX_) > opt_drag_.toleranceX || (currentX_ - (left_ + src.offsetWidth)) > opt_drag_.toleranceX) || ((top_ - currentY_) > opt_drag_.toleranceY || (currentY_ - (top_ + src.offsetHeight)) > opt_drag_.toleranceY)) {
+                        left_ = originalX_;
+                        top_ = originalY_;
+                    }
+                }
+                if (!opt_drag_.restrictX && !prevent) {
+                    src.style.left = left_ + "px";
+                }
+                if (!opt_drag_.restrictY && !prevent) {
+                    src.style.top = top_ + "px";
+                }
+            }
+
+            function mouseMove_(ev) {
+                var e = ev || event;
+                currentX_ = formerX_ + ((e.pageX || (e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft)) - formerMouseX_);
+                currentY_ = formerY_ + ((e.pageY || (e.clientY + document.body.scrollTop + document.documentElement.scrollTop)) - formerMouseY_);
+                formerX_ = currentX_;
+                formerY_ = currentY_;
+                formerMouseX_ = e.pageX || (e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft);
+                formerMouseY_ = e.pageY || (e.clientY + document.body.scrollTop + document.documentElement.scrollTop);
+                if (moving_) {
+                    moveTo_(currentX_, currentY_, preventDefault_);
+                    event_.trigger(me, "drag", {
+                        mouseX: formerMouseX_,
+                        mouseY: formerMouseY_,
+                        startLeft: originalX_,
+                        startTop: originalY_,
+                        event: e
+                    });
+                }
+            }
+
+            function mouseDown_(ev) {
+                var e = ev || event;
+                setCursor_(true);
+                event_.trigger(me, "mousedown", e);
+                if (src.style.position !== "absolute") {
+                    src.style.position = "absolute";
+                    return;
+                }
+                formerMouseX_ = e.pageX || (e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft);
+                formerMouseY_ = e.pageY || (e.clientY + document.body.scrollTop + document.documentElement.scrollTop);
+                originalX_ = src.offsetLeft;
+                originalY_ = src.offsetTop;
+                formerX_ = originalX_;
+                formerY_ = originalY_;
+                mouseMoveEvent_ = event_.addDomListener(target_, "mousemove", mouseMove_);
+                if (src.setCapture) {
+                    src.setCapture();
+                }
+                if (e.preventDefault) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                } else {
+                    e.cancelBubble = true;
+                    e.returnValue = false;
+                }
+                moving_ = true;
+                event_.trigger(me, "dragstart", {
+                    mouseX: formerMouseX_,
+                    mouseY: formerMouseY_,
+                    startLeft: originalX_,
+                    startTop: originalY_,
+                    event: e
+                });
+            }
+
+            function mouseUp_(ev) {
+                var e = ev || event;
+                if (moving_) {
+                    setCursor_(false);
+                    event_.removeListener(mouseMoveEvent_);
+                    if (src.releaseCapture) {
+                        src.releaseCapture();
+                    }
+                    moving_ = false;
+                    event_.trigger(me, "dragend", {
+                        mouseX: formerMouseX_,
+                        mouseY: formerMouseY_,
+                        startLeft: originalX_,
+                        startTop: originalY_,
+                        event: e
+                    });
+                }
+                currentX_ = currentY_ = null;
+                event_.trigger(me, "mouseup", e);
+            }
+
+            me.moveTo = function(point) {
+                moveTo_(point.x, point.y, false);
+            };
+
+            me.moveBy = function(size) {
+                moveTo_(src.offsetLeft + size.width, src.offsetHeight + size.height, false);
+            }
+
+            me.setDraggingCursor = function(cursor) {
+                draggingCursor_ = cursor;
+                setCursor_(moving_);
+            };
+
+            me.setDraggableCursor = function(cursor) {
+                draggableCursor_ = cursor;
+                setCursor_(moving_);
+            };
+
+            me.left = function() {
+                return left_;
+            };
+
+            me.top = function() {
+                return top_;
+            };
+
+            me.valueX = function() {
+                var i = opt_drag_.intervalX || 1;
+                return Math.round(left_ / i);
+            };
+
+            me.valueY = function() {
+                var i = opt_drag_.intervalY || 1;
+                return Math.round(top_ / i);
+            };
+
+            me.setValueX = function(value) {
+                moveTo_(value * opt_drag_.intervalX, top_, false);
+            };
+
+            me.setValueY = function(value) {
+                moveTo_(left_, value * opt_drag_.intervalY, false);
+            };
+
+            me.preventDefaultMovement = function(prevent) {
+                preventDefault_ = prevent;
+            };
+        }
+
+        // Beginning of https://github.com/gavinharriss/google-maps-v3-opacity-control/blob/master/CustomTileOverlay.js
+        CustomTileOverlay = function(map, opacity) {
+            this.tileSize = new google.maps.Size(256, 256);
+            this.map = map;
+            this.opacity = opacity;
+            this.tiles = [];
+            this.visible = false;
+            this.initialized = false;
+            this.self = this;
+        }
+
+        CustomTileOverlay.prototype = new google.maps.OverlayView();
+
+        CustomTileOverlay.prototype.getTile = function(p, z, ownerDocument) {
+            // If tile already exists then use it
+            for (var n = 0; n < this.tiles.length; n++) {
+                if (this.tiles[n].id == 't_' + p.x + '_' + p.y + '_' + z) {
+                    return this.tiles[n];
+                }
+            }
+
+            // If tile doesn't exist then create it
+            var tile = ownerDocument.createElement('div');
+            var tp = this.getTileUrlCoord(p, z);
+            tile.id = 't_' + tp.x + '_' + tp.y + '_' + z
+            tile.style.width = this.tileSize.width + 'px';
+            tile.style.height = this.tileSize.height + 'px';
+            tile.style.backgroundImage = 'url(' + this.getTileUrl(tp, z) + ')';
+            tile.style.backgroundRepeat = 'no-repeat';
+
+            if (!this.visible) {
+                tile.style.display = 'none';
+            }
+
+            this.tiles.push(tile)
+
+            this.setObjectOpacity(tile);
+
+            return tile;
+        }
+
+        // Save memory / speed up the display by deleting tiles out of view
+        CustomTileOverlay.prototype.deleteHiddenTiles = function(zoom) {
+            var bounds = this.map.getBounds();
+            var tileNE = this.getTileUrlCoordFromLatLng(bounds.getNorthEast(), zoom);
+            var tileSW = this.getTileUrlCoordFromLatLng(bounds.getSouthWest(), zoom);
+
+            var minX = tileSW.x - 1;
+            var maxX = tileNE.x + 1;
+            var minY = tileSW.y - 1;
+            var maxY = tileNE.y + 1;
+
+            var tilesToKeep = [];
+            var tilesLength = this.tiles.length;
+            for (var i = 0; i < tilesLength; i++) {
+                var idParts = this.tiles[i].id.split("_");
+                var tileX = Number(idParts[1]);
+                var tileY = Number(idParts[2]);
+                var tileZ = Number(idParts[3]);
+                if ((
+                        (minX < maxX && (tileX >= minX && tileX <= maxX))
+                        || (minX > maxX && ((tileX >= minX && tileX <= (Math.pow(2, zoom) - 1)) || (tileX >= 0 && tileX <= maxX)))
+                    )
+                    && (tileY >= minY && tileY <= maxY)
+                    && tileZ == zoom) {
+                    tilesToKeep.push(this.tiles[i]);
+                } else {
+                    delete this.tiles[i];
+                }
+            }
+
+            this.tiles = tilesToKeep;
+        };
+
+        CustomTileOverlay.prototype.pointToTile = function(point, z) {
+            var projection = this.map.getProjection();
+            var worldCoordinate = projection.fromLatLngToPoint(point);
+            var pixelCoordinate = new google.maps.Point(worldCoordinate.x * Math.pow(2, z), worldCoordinate.y * Math.pow(2, z));
+            var tileCoordinate = new google.maps.Point(Math.floor(pixelCoordinate.x / this.tileSize.width), Math.floor(pixelCoordinate.y / this.tileSize.height));
+            return tileCoordinate;
+        }
+
+        CustomTileOverlay.prototype.getTileUrlCoordFromLatLng = function(latlng, zoom) {
+            return this.getTileUrlCoord(this.pointToTile(latlng, zoom), zoom)
+        }
+
+        CustomTileOverlay.prototype.getTileUrlCoord = function(coord, zoom) {
+            var tileRange = 1 << zoom;
+            var y = tileRange - coord.y - 1;
+            var x = coord.x;
+            if (x < 0 || x >= tileRange) {
+                x = (x % tileRange + tileRange) % tileRange;
+            }
+            return new google.maps.Point(x, y);
+        }
+
+        // Modified for gdal2tiles needs
+        CustomTileOverlay.prototype.getTileUrl = function(tile, zoom) {
+            if ((zoom < mapMinZoom) || (zoom > mapMaxZoom)) {
+                return "https://gdal.org/resources/gdal2tiles/none.png";
+            }
+            var ymax = 1 << zoom;
+            var y = ymax - tile.y - 1;
+            var tileBounds = new google.maps.LatLngBounds(
+                fromMercatorPixelToLatLng(new google.maps.Point((tile.x) * 256, (y + 1) * 256), zoom),
+                fromMercatorPixelToLatLng(new google.maps.Point((tile.x + 1) * 256, (y) * 256), zoom)
+            );
+            if (mapBounds.intersects(tileBounds)) {
+                return "/hasil_tiles/" + zoom + "/" + tile.x + "/" + tile.y + ".png";
+            } else {
+                return "https://gdal.org/resources/gdal2tiles/none.png";
+            }
+        }
+
+        CustomTileOverlay.prototype.initialize = function() {
+            if (this.initialized) {
+                return;
+            }
+            var self = this.self;
+            this.map.overlayMapTypes.insertAt(0, self);
+            this.initialized = true;
+        }
+
+        CustomTileOverlay.prototype.hide = function() {
+            this.visible = false;
+            var tileCount = this.tiles.length;
+            for (var n = 0; n < tileCount; n++) {
+                this.tiles[n].style.display = 'none';
+            }
+        }
+
+        CustomTileOverlay.prototype.show = function() {
+            this.initialize();
+            this.visible = true;
+            var tileCount = this.tiles.length;
+            for (var n = 0; n < tileCount; n++) {
+                this.tiles[n].style.display = '';
+            }
+        }
+
+        CustomTileOverlay.prototype.releaseTile = function(tile) {
+            tile = null;
+        }
+
+        CustomTileOverlay.prototype.setOpacity = function(op) {
+            this.opacity = op;
+            var tileCount = this.tiles.length;
+            for (var n = 0; n < tileCount; n++) {
+                this.setObjectOpacity(this.tiles[n]);
+            }
+        }
+
+        CustomTileOverlay.prototype.setObjectOpacity = function(obj) {
+            if (this.opacity > 0) {
+                if (typeof(obj.style.filter) == 'string') {
+                    obj.style.filter = 'alpha(opacity:' + this.opacity + ')';
+                }
+                if (typeof(obj.style.KHTMLOpacity) == 'string') {
+                    obj.style.KHTMLOpacity = this.opacity / 100;
+                }
+                if (typeof(obj.style.MozOpacity) == 'string') {
+                    obj.style.MozOpacity = this.opacity / 100;
+                }
+                if (typeof(obj.style.opacity) == 'string') {
+                    obj.style.opacity = this.opacity / 100;
+                }
+            }
+        }
+
+        // Three.js Implementation
+        function ThreeManager(map) {
+            this.map = map;
+            this.scene = null;
+            this.camera = null;
+            this.renderer = null;
+            this.container = null;
+            this.trees = [];
+            this.is3DView = false;
+            this.treeGroup = null;
+            
+            this.init();
+        }
+
+        ThreeManager.prototype.init = function() {
+            // Create container for Three.js
+            this.container = document.getElementById('three-container');
+            
+            // Initialize Three.js
+            this.scene = new THREE.Scene();
+            this.scene.background = null; // Transparent background
+            
+            // Camera setup
+            this.camera = new THREE.PerspectiveCamera(
+                60,
+                window.innerWidth / (window.innerHeight - 60),
+                0.1,
+                1000000000
+            );
+            
+            // Renderer setup
+            this.renderer = new THREE.WebGLRenderer({ 
+                alpha: true, // Transparent background
+                antialias: true 
+            });
+            this.renderer.setSize(window.innerWidth, window.innerHeight - 60);
+            this.renderer.setPixelRatio(window.devicePixelRatio);
+            this.container.appendChild(this.renderer.domElement);
+            
+            // Lighting
+            var ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            this.scene.add(ambientLight);
+
+            var directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10000000, 20000000, 10000000);
+            this.scene.add(directionalLight);
+            
+            // Tree group
+            this.treeGroup = new THREE.Group();
+            this.scene.add(this.treeGroup);
+            
+            // Handle window resize
+            window.addEventListener('resize', this.onWindowResize.bind(this));
+            
+            // Start with 2D view
+            this.set2DView();
+            
+            // Start animation loop
+            this.animate();
+            
+            // Add sample trees
+            this.addSampleTrees();
+        }
+
+        ThreeManager.prototype.set2DView = function() {
+            this.is3DView = false;
+            this.container.style.pointerEvents = 'none';
+            
+            // Position camera for 2D view
+            if (this.map && this.map.getBounds) {
+                var bounds = this.map.getBounds();
+                var center = bounds.getCenter();
+                
+                this.camera.position.set(
+                    0,
+                    10000000, // High up for 2D view
+                    0
+                );
+                this.camera.lookAt(0, 0, 0);
+            }
+        }
+
+        ThreeManager.prototype.set3DView = function() {
+            this.is3DView = true;
+            this.container.style.pointerEvents = 'auto';
+            
+            // Position camera for 3D view
+            if (this.map && this.map.getBounds) {
+                var bounds = this.map.getBounds();
+                var center = bounds.getCenter();
+                
+                this.camera.position.set(
+                    0,
+                    5000000, // Lower for 3D view
+                    10000000
+                );
+                this.camera.lookAt(0, 0, 0);
+            }
+        }
+
+        ThreeManager.prototype.toggle3DView = function() {
+            if (this.is3DView) {
+                this.set2DView();
+            } else {
+                this.set3DView();
+            }
+        }
+
+        ThreeManager.prototype.generateProceduralTree = function(height) {
+            var trunkHeight = height * 0.6;
+            var crownHeight = height * 0.8;
+            var trunkRadius = height * 0.05;
+            var crownRadius = height * 0.3;
+            
+            var treeGroup = new THREE.Group();
+            
+            // Trunk
+            var trunkGeometry = new THREE.CylinderGeometry(
+                trunkRadius * 0.7,
+                trunkRadius,
+                trunkHeight,
+                8
+            );
+            var trunkMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
+            var trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+            trunk.position.y = trunkHeight / 2;
+            treeGroup.add(trunk);
+            
+            // Crown with different shapes
+            var crownShapes = [
+                function() {
+                    var geometry = new THREE.ConeGeometry(crownRadius, crownHeight, 8);
+                    return new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: 0x228B22 }));
+                },
+                function() {
+                    var geometry = new THREE.SphereGeometry(crownRadius, 8, 6);
+                    return new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: 0x32CD32 }));
+                },
+                function() {
+                    var geometry = new THREE.SphereGeometry(crownRadius, 8, 6);
+                    var mesh = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: 0x2E8B57 }));
+                    mesh.scale.y = 1.5;
+                    return mesh;
+                }
+            ];
+            
+            var crownShapeIndex = Math.floor(Math.random() * crownShapes.length);
+            var crown = crownShapes[crownShapeIndex]();
+            crown.position.y = trunkHeight + crownHeight / 2;
+            treeGroup.add(crown);
+            
+            return treeGroup;
+        }
+
+        ThreeManager.prototype.addTreeAtPosition = function(latLng) {
+            // Convert lat/lng to world coordinates
+            var projection = this.map.getProjection();
+            var worldCoordinate = projection.fromLatLngToPoint(latLng);
+            
+            // Scale to match our coordinate system
+            var scale = 100000;
+            var x = (worldCoordinate.x - 0.5) * scale;
+            var z = (worldCoordinate.y - 0.5) * scale;
+            
+            // Generate tree
+            var height = 5 + Math.random() * 10;
+            var tree = this.generateProceduralTree(height);
+            
+            // Position tree
+            tree.position.set(x, 0, z);
+            tree.rotation.y = Math.random() * Math.PI * 2;
+            
+            // Store tree data
+            tree.userData = {
+                type: 'tree',
+                height: height,
+                latLng: latLng
+            };
+            
+            this.treeGroup.add(tree);
+            this.trees.push(tree);
+            
+            return tree;
+        }
+
+        ThreeManager.prototype.addSampleTrees = function() {
+            // Add sample trees at specific locations
+            var sampleLocations = [
+                new google.maps.LatLng(3.25, 98.93),
+                new google.maps.LatLng(3.26, 98.94),
+                new google.maps.LatLng(3.27, 98.95),
+                new google.maps.LatLng(3.28, 98.92),
+                new google.maps.LatLng(3.29, 98.93)
+            ];
+            
+            var self = this;
+            sampleLocations.forEach(function(location) {
+                self.addTreeAtPosition(location);
+            });
+        }
+
+        ThreeManager.prototype.toggleTrees = function() {
+            this.treeGroup.visible = !this.treeGroup.visible;
+        }
+
+        ThreeManager.prototype.animateGrowth = function() {
+            var self = this;
+            this.trees.forEach(function(tree) {
+                if (tree.userData.type === 'tree') {
+                    self.animateTreeGrowth(tree, tree.userData.height, 2000);
+                }
+            });
+        }
+
+        ThreeManager.prototype.animateTreeGrowth = function(tree, targetHeight, duration) {
+            var startHeight = 0.1;
+            var startTime = Date.now();
+            var self = this;
+            
+            var animate = function() {
+                var elapsed = Date.now() - startTime;
+                var progress = Math.min(elapsed / duration, 1);
+                
+                var easeProgress = self.easeOutElastic(progress);
+                var currentHeight = startHeight + (targetHeight - startHeight) * easeProgress;
+                
+                // Update trunk
+                var trunk = tree.children.find(function(child) {
+                    return child.geometry instanceof THREE.CylinderGeometry;
+                });
+                if (trunk) {
+                    trunk.scale.y = currentHeight / targetHeight;
+                    trunk.position.y = (currentHeight * 0.6) / 2;
+                }
+                
+                // Update crown
+                var crown = tree.children.find(function(child) {
+                    return child.geometry instanceof THREE.ConeGeometry || 
+                           child.geometry instanceof THREE.SphereGeometry;
+                });
+                if (crown) {
+                    crown.scale.y = currentHeight / targetHeight;
+                    crown.position.y = (currentHeight * 0.6) + (currentHeight * 0.8) / 2;
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            animate();
+        }
+
+        ThreeManager.prototype.easeOutElastic = function(x) {
+            var c4 = (2 * Math.PI) / 3;
+            return x === 0 ? 0 : x === 1 ? 1 : Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
+        }
+
+        ThreeManager.prototype.onWindowResize = function() {
+            this.camera.aspect = window.innerWidth / (window.innerHeight - 60);
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight - 60);
+        }
+
+        ThreeManager.prototype.animate = function() {
+            var self = this;
+            requestAnimationFrame(function() {
+                self.animate();
+            });
+            this.renderer.render(this.scene, this.camera);
+        }
+
+        ThreeManager.prototype.getTreeCount = function() {
+            return this.trees.length;
+        }
+
+        ThreeManager.prototype.resetView = function() {
+            if (this.is3DView) {
+                this.set3DView();
+            } else {
+                this.set2DView();
+            }
+        }
+
+        /*
+         * Main load function:
+         */
+        function load() {
+            var options = {
+                center: mapBounds.getCenter(),
+                zoom: mapMaxZoom,
+                mapTypeId: google.maps.MapTypeId.HYBRID,
+                mapTypeControl: true,
+                mapTypeControlOptions: {
+                    style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                    position: google.maps.ControlPosition.TOP_LEFT
+                },
+                scaleControl: true,
+                scaleControlOptions: {
+                    position: google.maps.ControlPosition.BOTTOM_RIGHT
+                }
+            };
+
+            map = new google.maps.Map(document.getElementById("map"), options);
+            
+            // Calculate and add centroid marker for "Kebun Silau Dunia"
+            var centroid = calculateCentroid(mapBounds);
+            
+// Create custom marker for centroid with auto-adjusting label background
+function createCustomMarkerWithLabel(map, position, title, labelText) {
+    // Create a div to measure text width
+    var textMeasureDiv = document.createElement('div');
+    textMeasureDiv.style.position = 'absolute';
+    textMeasureDiv.style.visibility = 'hidden';
+    textMeasureDiv.style.height = 'auto';
+    textMeasureDiv.style.width = 'auto';
+    textMeasureDiv.style.whiteSpace = 'nowrap';
+    textMeasureDiv.style.fontWeight = 'bold';
+    textMeasureDiv.style.fontSize = '14px';
+    textMeasureDiv.style.padding = '0 8px';
+    textMeasureDiv.innerHTML = labelText;
+    document.body.appendChild(textMeasureDiv);
+    
+    // Get the text width
+    var textWidth = textMeasureDiv.offsetWidth;
+    document.body.removeChild(textMeasureDiv);
+    
+    // Add padding to the width
+    var labelWidth = textWidth + 16; // 8px padding on each side
+    var labelHeight = 28; // Fixed height for the label
+    
+    // Create SVG for the marker icon with label
+    var svgLabel = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="${labelWidth}" height="${labelHeight + 20}" viewBox="0 0 ${labelWidth} ${labelHeight + 20}">
+            <rect x="0" y="0" width="${labelWidth}" height="${labelHeight}" rx="4" ry="4" fill="rgba(248, 248, 255, 0.9)" stroke="#2c3e50" stroke-width="1"/>
+            <text x="${labelWidth/2}" y="18" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">${labelText}</text>
+            <circle cx="${labelWidth/2}" cy="${labelHeight + 10}" r="6" fill="#e74c3c" stroke="#ffffff" stroke-width="2"/>
+        </svg>
+    `;
+    
+    // Create the marker
+    var marker = new google.maps.Marker({
+        position: position,
+        map: map,
+        title: title,
+        icon: {
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgLabel),
+            scaledSize: new google.maps.Size(labelWidth, labelHeight + 20),
+            anchor: new google.maps.Point(labelWidth/2, labelHeight + 20)
+        }
+    });
+    
+    return marker;
+}
+
+// Use the custom function to create the centroid marker
+centroidMarker = createCustomMarkerWithLabel(
+    map, 
+    centroid, 
+    "Kebun Silau Dunia", 
+    "Kebun Silau Dunia"
+);
+
+// Create info window for centroid
+var centroidInfoWindow = new google.maps.InfoWindow({
+    content: "<div style='padding: 10px;'><h3 style='color: #2c3e50; margin-top: 0;'>Kebun Silau Dunia</h3><p style='margin: 5px 0;'>Centroid area perkebunan</p><p style='margin: 5px 0; font-size: 12px; color: #7f8c8d;'>Koordinat: " + centroid.lat().toFixed(6) + ", " + centroid.lng().toFixed(6) + "</p></div>"
+});
+
+// Add click listener to centroid marker
+centroidMarker.addListener('click', function() {
+    centroidInfoWindow.open(map, centroidMarker);
+});
+
+// Open info window by default
+centroidInfoWindow.open(map, centroidMarker);
+
+google.maps.event.addListenerOnce(map, "projection_changed", function() {
+    map.setZoom(getZoomByBounds(map, mapBounds));
+});
+
+overlay = new CustomTileOverlay(map, initialOpacity);
+overlay.show();
+
+google.maps.event.addListener(map, 'tilesloaded', function() {
+    overlay.deleteHiddenTiles(map.getZoom());
+});
+
+createOpacityControl(map, initialOpacity);
+            // Initialize Three.js after map is ready
+            setTimeout(function() {
+            //     threeManager = new ThreeManager(map);
+                
+            //     // Setup event listeners
+            //     document.getElementById('toggle-3d').addEventListener('click', function() {
+            //         threeManager.toggle3DView();
+            //     });
+                
+            //     document.getElementById('toggle-trees').addEventListener('click', function() {
+            //         threeManager.toggleTrees();
+            //     });
+                
+            //     document.getElementById('animate-growth').addEventListener('click', function() {
+            //         threeManager.animateGrowth();
+            //     });
+                
+            //     document.getElementById('reset-view').addEventListener('click', function() {
+            //         threeManager.resetView();
+            //     });
+                
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }, 1000);
+            
+            // Update UI
+            setInterval(function() {
+                if (map) {
+                    document.getElementById('zoom').textContent = map.getZoom();
+                }
+                if (overlay) {
+                    document.getElementById('tile-count').textContent = overlay.tiles.length;
+                }
+                if (threeManager) {
+                    document.getElementById('tree-count').textContent = threeManager.getTreeCount();
+                }
+                
+                // Update last update time
+                var now = new Date();
+                var timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                 now.getMinutes().toString().padStart(2, '0') + ':' + 
+                                 now.getSeconds().toString().padStart(2, '0');
+                document.getElementById('last-update').textContent = timeString;
+            }, 1000);
+        }
+
+        // Function to calculate centroid of LatLngBounds
+        function calculateCentroid(bounds) {
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+            
+            // Calculate the center (centroid)
+            var lat = (ne.lat() + sw.lat()) / 2;
+            var lng = (ne.lng() + sw.lng()) / 2;
+            
+            return new google.maps.LatLng(lat, lng);
+        }
+
+        onresize = function() {
+            resize();
+        };
+
+        // Initialize when DOM is loaded
+        google.maps.event.addDomListener(window, 'load', load);
+        //]]>
+    </script>
+</body>
+</html>
