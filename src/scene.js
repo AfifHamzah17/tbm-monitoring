@@ -73,7 +73,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { TileLoader } from './tileLoader.js';
 import { TerrainManager } from './terrainManager.js';
-import { TreeManager } from './treeManager.js';
+import { TreeManager } from './threeManager.js';
 
 export class Scene {
     constructor() {

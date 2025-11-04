@@ -94,6 +94,12 @@
             z-index: 100;
             min-width: 250px;
             backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .info-panel.hidden {
+            transform: translateX(120%);
+            opacity: 0;
         }
         
         .info-panel h3 {
@@ -130,13 +136,22 @@
         .controls-panel {
             position: absolute;
             top: 20px;
-            right: 20px;
+            left: 20px;
             background: rgba(255,255,255,0.95);
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             z-index: 100;
             backdrop-filter: blur(10px);
+            max-height: 70vh;
+            overflow-y: auto;
+            max-width: 300px;
+            transition: all 0.3s ease;
+        }
+        
+        .controls-panel.hidden {
+            transform: translateX(-120%);
+            opacity: 0;
         }
         
         .controls-panel h4 {
@@ -144,11 +159,41 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: space-between;
         }
         
         .controls-panel h4 i {
             color: #3498db;
+        }
+        
+        .collapse-btn {
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .collapse-btn:hover {
+            color: #2c3e50;
+        }
+        
+        .collapse-btn i {
+            transition: transform 0.3s ease;
+        }
+        
+        .collapse-btn.collapsed i {
+            transform: rotate(180deg);
+        }
+        
+        .collapsible-content {
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .collapsible-content.collapsed {
+            max-height: 0;
         }
         
         .control-btn {
@@ -190,6 +235,60 @@
         
         .control-btn.warning:hover {
             box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        /* Tree Layer Controls */
+        .tree-layer {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 15px;
+        }
+        
+        .tree-layer:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .layer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .layer-title {
+            font-weight: bold;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .layer-toggle {
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .layer-toggle:hover {
+            background: #2980b9;
+        }
+        
+        .layer-toggle.active {
+            background: #27ae60;
+        }
+        
+        .layer-info {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-left: 20px;
         }
         
         /* Three Container */
@@ -304,12 +403,189 @@
             border-right: 10px solid transparent;
             border-top: 10px solid white;
         }
+        
+        /* Tree marker styles */
+        .tree-marker {
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background-color: #27ae60;
+            border: 1px solid #fff;
+            box-shadow: 0 0 3px rgba(0,0,0,0.3);
+        }
+        
+        .tree-marker.tbm2022 {
+            background-color: #3498db;
+        }
+        
+        .tree-marker.tbm2023 {
+            background-color: #27ae60;
+        }
+        
+        /* Cluster styles */
+        .cluster-icon {
+            background: rgba(52, 152, 219, 0.8);
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 40px;
+            width: 40px;
+            height: 40px;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        
+        .cluster-icon.tbm2022 {
+            background: rgba(52, 152, 219, 0.8);
+        }
+        
+        .cluster-icon.tbm2023 {
+            background: rgba(39, 174, 96, 0.8);
+        }
+        
+        /* Legend Panel */
+        .legend-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .legend-panel.hidden {
+            transform: translateY(120%);
+            opacity: 0;
+        }
+        
+        .legend-title {
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .legend-title i {
+            color: #3498db;
+        }
+        
+        .legend-content {
+            transition: max-height 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .legend-content.collapsed {
+            max-height: 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            justify-content: space-between;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            border: 1px solid #fff;
+            box-shadow: 0 0 2px rgba(0,0,0,0.3);
+        }
+        
+        .legend-label {
+            font-size: 0.9rem;
+            color: #2c3e50;
+            flex-grow: 1;
+        }
+        
+        .legend-count {
+            font-weight: bold;
+            color: #2c3e50;
+            background: rgba(46, 204, 113, 0.1);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+        
+        /* Boundary Controls */
+        .boundary-section {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #ecf0f1;
+        }
+        
+        .boundary-layer {
+            margin-bottom: 10px;
+        }
+        
+        .boundary-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .boundary-toggle:hover {
+            background: rgba(255,255,255,1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .boundary-toggle.active {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+        
+        .boundary-name {
+            font-size: 0.9rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .boundary-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e74c3c;
+        }
+        
+        .boundary-status.loaded {
+            background: #27ae60;
+        }
+
+        /* Toggle button style */
+        .navbar-item#toggle-panels {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+        }
+
+        .navbar-item#toggle-panels:hover {
+            background: rgba(255,255,255,0.2);
+        }
     </style>
     
     <!-- Load Google Maps API -->
     <script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyB75X3CyuZU1EzL0s8IpuZ9cf597RrKDGk'></script>
     <!-- Load Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Load Shapefile.js -->
+    <script src="https://unpkg.com/shpjs@latest/dist/shp.js"></script>
+    <!-- Load MarkerClusterer -->
+    <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
 </head>
 <body>
     <!-- Loading Spinner -->
@@ -340,6 +616,10 @@
                 <i class="fas fa-cog"></i>
                 Pengaturan
             </a>
+            <a href="#" class="navbar-item" id="toggle-panels">
+                <i class="fas fa-eye-slash" id="toggle-icon"></i>
+                <span id="toggle-text">Sembunyikan Panel</span>
+            </a>
         </div>
     </nav>
     
@@ -347,6 +627,43 @@
     <div class="main-container">
         <div id="map"></div>
         <div id="three-container"></div>
+        
+        <!-- Tree Layers Panel -->
+        <div class="controls-panel" id="tree-layers-panel">
+            <h4>
+                <span><i class="fas fa-tree"></i> Layer Pohon</span>
+                <button class="collapse-btn" id="tree-layers-collapse">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+            </h4>
+            <div class="collapsible-content" id="tree-layers-content">
+                <div id="tree-layers-container">
+                    <!-- Tree layers will be added here dynamically -->
+                </div>
+                <div class="tooltip">
+                    <button class="control-btn success" id="load-all-trees">
+                        <i class="fas fa-download"></i>
+                        Muat Semua Layer
+                    </button>
+                    <span class="tooltiptext">Muat semua layer pohon dari shapefile</span>
+                </div>
+            </div>
+            
+            <!-- Boundary Controls -->
+            <div class="boundary-section">
+                <h4>
+                    <span><i class="fas fa-draw-polygon"></i> Layer Batas</span>
+                    <button class="collapse-btn" id="boundary-layers-collapse">
+                        <i class="fas fa-chevron-up"></i>
+                    </button>
+                </h4>
+                <div class="collapsible-content" id="boundary-layers-content">
+                    <div id="boundary-layers-container">
+                        <!-- Boundary layers will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- Info Panel -->
         <div class="info-panel">
@@ -374,46 +691,54 @@
                 <span class="info-value" id="tree-count">0</span>
             </div>
             <div class="info-item">
+                <span class="info-label">Total Trees:</span>
+                <span class="info-value" id="total-tree-count">0</span>
+            </div>
+            <div class="info-item">
                 <span class="info-label">Last Update:</span>
                 <span class="info-value" id="last-update">--:--:--</span>
             </div>
         </div>
         
-        <!-- Controls Panel -->
-        <!-- <div class="controls-panel">
-            <h4>
-                <i class="fas fa-gamepad"></i>
-                Kontrol Visualisasi
-            </h4>
-            <div class="tooltip">
-                <button class="control-btn" id="toggle-3d">
-                    <i class="fas fa-cube"></i>
-                    Toggle 3D View
+        <!-- Legend Panel -->
+        <div class="legend-panel">
+            <div class="legend-title">
+                <span><i class="fas fa-palette"></i> Legenda Kondisi Pohon</span>
+                <button class="collapse-btn" id="legend-collapse">
+                    <i class="fas fa-chevron-up"></i>
                 </button>
-                <span class="tooltiptext">Beralih antara tampilan 2D dan 3D</span>
             </div>
-            <div class="tooltip">
-                <button class="control-btn success" id="toggle-trees">
-                    <i class="fas fa-tree"></i>
-                    Toggle Pohon
-                </button>
-                <span class="tooltiptext">Tampilkan/sembunyikan pohon 3D</span>
+            <div class="legend-content" id="legend-content">
+                <div class="legend-item">
+                    <div style="display: flex; align-items: center;">
+                        <div class="legend-color" style="background-color: #f1c40f;"></div>
+                        <div class="legend-label">Kerdil</div>
+                    </div>
+                    <div class="legend-count" id="kerdil-count">0</div>
+                </div>
+                <div class="legend-item">
+                    <div style="display: flex; align-items: center;">
+                        <div class="legend-color" style="background-color: #e74c3c;"></div>
+                        <div class="legend-label">Mati</div>
+                    </div>
+                    <div class="legend-count" id="mati-count">0</div>
+                </div>
+                <div class="legend-item">
+                    <div style="display: flex; align-items: center;">
+                        <div class="legend-color" style="background-color: #2c3e50;"></div>
+                        <div class="legend-label">Normal</div>
+                    </div>
+                    <div class="legend-count" id="normal-count">0</div>
+                </div>
+                <div class="legend-item">
+                    <div style="display: flex; align-items: center;">
+                        <div class="legend-color" style="background-color: #3498db;"></div>
+                        <div class="legend-label">Sisipan</div>
+                    </div>
+                    <div class="legend-count" id="sisipan-count">0</div>
+                </div>
             </div>
-            <div class="tooltip">
-                <button class="control-btn warning" id="animate-growth">
-                    <i class="fas fa-seedling"></i>
-                    Animasi Pertumbuhan
-                </button>
-                <span class="tooltiptext">Jalankan animasi pertumbuhan pohon</span>
-            </div>
-            <div class="tooltip">
-                <button class="control-btn" id="reset-view">
-                    <i class="fas fa-home"></i>
-                    Reset View
-                </button>
-                <span class="tooltiptext">Kembalikan ke tampilan awal</span>
-            </div>
-        </div> -->
+        </div>
     </div>
 
     <script>
@@ -431,6 +756,19 @@
         var overlay;
         var threeManager;
         var centroidMarker;
+        var treeLayers = {};
+        var totalTreeCount = 0;
+        var advancedMarkers = [];
+        var markerClusterers = {}; // Store clusterers for each layer
+        var boundaryLayers = {}; // Store boundary layers
+        
+        // Tree condition counts
+        var treeConditionCounts = {
+            kerdil: 0,
+            mati: 0,
+            normal: 0,
+            sisipan: 0
+        };
 
         // Show loading spinner
         document.getElementById('loadingSpinner').style.display = 'block';
@@ -1206,9 +1544,682 @@
             }
         }
 
-        /*
-         * Main load function:
-         */
+        // Helper functions for boundary layers
+        function stringToColor(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = str.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const hue = hash % 360;
+            return `hsl(${hue}, 70%, 50%)`;
+        }
+
+        function createLabel(position, text) {
+            return new google.maps.Marker({
+                position: position,
+                label: {
+                    text: text,
+                    color: '#2c3e50',
+                    fontWeight: 'bold',
+                    fontSize: '12px'
+                },
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 0
+                },
+                zIndex: 5
+            });
+        }
+
+        // Update tree condition counts in the legend
+        function updateTreeConditionCounts() {
+            document.getElementById('kerdil-count').textContent = treeConditionCounts.kerdil;
+            document.getElementById('mati-count').textContent = treeConditionCounts.mati;
+            document.getElementById('normal-count').textContent = treeConditionCounts.normal;
+            document.getElementById('sisipan-count').textContent = treeConditionCounts.sisipan;
+        }
+
+        // Get marker color based on tree condition
+        function getMarkerColor(konpokok) {
+            switch(konpokok) {
+                case 'kerdil':
+                    return '#f1c40f'; // Yellow
+                case 'mati':
+                    return '#e74c3c'; // Red
+                case 'normal':
+                    return '#2c3e50'; // Black
+                case 'sisipan':
+                    return '#3498db'; // Blue
+                default:
+                    return '#27ae60'; // Default green
+            }
+        }
+
+        // Initialize tree layers
+        function initializeTreeLayers() {
+            var layerDefinitions = [
+                { id: 'AFD01_2023', name: 'AFD01 - TBM 2023', file: '1KSA_AFD01_TBM2023_MEIJUNJULAG2025', year: '2023' },
+                { id: 'AFD02_2023', name: 'AFD02 - TBM 2023', file: '1KSA_AFD02_TBM2023_MEIJUNJULAG2025', year: '2023' },
+                { id: 'AFD03_2022', name: 'AFD03 - TBM 2022', file: '1KSA_AFD03_TBM2022_MEIJUNJULAG2025', year: '2022' },
+                { id: 'AFD03_2023', name: 'AFD03 - TBM 2023', file: '1KSA_AFD03_TBM2023_MEIJUNJULAG2025', year: '2023' },
+                { id: 'AFD04_2023', name: 'AFD04 - TBM 2023', file: '1KSA_AFD04_TBM2023_MEIJUNJULAG2025', year: '2023' },
+                { id: 'AFD05_2022', name: 'AFD05 - TBM 2022', file: '1KSA_AFD05_TBM2022_MEIJUNJULAG2025', year: '2022' },
+                { id: 'AFD05_2023', name: 'AFD05 - TBM 2023', file: '1KSA_AFD05_TBM2023_MEIJUNJULAG2025', year: '2023' },
+                { id: 'AFD06_2023', name: 'AFD06 - TBM 2023', file: '1KSA_AFD06_TBM2023_MEIJUNJULAG2025', year: '2023' },
+                { id: 'AFD07_2022', name: 'AFD07 - TBM 2022', file: '1KSA_AFD07_TBM2022_MEIJUNJULAG2025', year: '2022' },
+                { id: 'AFD07_2023', name: 'AFD07 - TBM 2023', file: '1KSA_AFD07_TBM2023_MEIJUNJULAG2025', year: '2023' }
+            ];
+            
+            var container = document.getElementById('tree-layers-container');
+            
+            layerDefinitions.forEach(function(layerDef) {
+                treeLayers[layerDef.id] = {
+                    id: layerDef.id,
+                    name: layerDef.name,
+                    file: layerDef.file,
+                    year: layerDef.year,
+                    markers: [],
+                    visible: false,
+                    loaded: false,
+                    count: 0,
+                    conditionCounts: {
+                        kerdil: 0,
+                        mati: 0,
+                        normal: 0,
+                        sisipan: 0
+                    }
+                };
+                
+                var layerDiv = document.createElement('div');
+                layerDiv.className = 'tree-layer';
+                layerDiv.id = 'layer-' + layerDef.id;
+                
+                var headerDiv = document.createElement('div');
+                headerDiv.className = 'layer-header';
+                
+                var titleDiv = document.createElement('div');
+                titleDiv.className = 'layer-title';
+                titleDiv.innerHTML = '<i class="fas fa-tree"></i> ' + layerDef.name;
+                
+                var toggleBtn = document.createElement('button');
+                toggleBtn.className = 'layer-toggle';
+                toggleBtn.textContent = 'Muat';
+                toggleBtn.dataset.layerId = layerDef.id;
+                
+                headerDiv.appendChild(titleDiv);
+                headerDiv.appendChild(toggleBtn);
+                
+                var infoDiv = document.createElement('div');
+                infoDiv.className = 'layer-info';
+                infoDiv.id = 'info-' + layerDef.id;
+                infoDiv.textContent = 'Belum dimuat';
+                
+                layerDiv.appendChild(headerDiv);
+                layerDiv.appendChild(infoDiv);
+                
+                container.appendChild(layerDiv);
+                
+                toggleBtn.addEventListener('click', function() {
+                    var layerId = this.dataset.layerId;
+                    toggleTreeLayer(layerId);
+                });
+            });
+        }
+
+        // Initialize boundary layers
+        function initializeBoundaryLayers() {
+            var boundaryDefinitions = [
+                { id: 'AFD01_BATAS_2023', name: 'AFD01 - Batas 2023', file: '1KSA_AFD01_TBM2023_BATAS', type: 'batas' },
+                { id: 'AFD01_BLOK_2023', name: 'AFD01 - Blok 2023', file: '1KSA_AFD01_TBM2023_BLOK', type: 'blok' },
+                { id: 'AFD02_BATAS_2023', name: 'AFD02 - Batas 2023', file: '1KSA_AFD02_TBM2023_BATAS', type: 'batas' },
+                { id: 'AFD02_BLOK_2023', name: 'AFD02 - Blok 2023', file: '1KSA_AFD02_TBM2023_BLOK', type: 'blok' },
+                { id: 'AFD03_BATAS_2022', name: 'AFD03 - Batas 2022', file: '1KSA_AFD03_TBM2022_BATAS', type: 'batas' },
+                { id: 'AFD03_BLOK_2022', name: 'AFD03 - Blok 2022', file: '1KSA_AFD03_TBM2022_BLOK', type: 'blok' },
+                { id: 'AFD03_BATAS_2023', name: 'AFD03 - Batas 2023', file: '1KSA_AFD03_TBM2023_BATAS', type: 'batas' },
+                { id: 'AFD03_BLOK_2023', name: 'AFD03 - Blok 2023', file: '1KSA_AFD03_TBM2023_BLOK', type: 'blok' },
+                { id: 'AFD04_BATAS_2023', name: 'AFD04 - Batas 2023', file: '1KSA_AFD04_TBM2023_BATAS', type: 'batas' },
+                { id: 'AFD04_BLOK_2023', name: 'AFD04 - Blok 2023', file: '1KSA_AFD04_TBM2023_BLOK', type: 'blok' },
+                { id: 'AFD05_BATAS_2022', name: 'AFD05 - Batas 2022', file: '1KSA_AFD05_TBM2022_BATAS', type: 'batas' },
+                { id: 'AFD05_BLOK_2022', name: 'AFD05 - Blok 2022', file: '1KSA_AFD05_TBM2022_BLOK', type: 'blok' },
+                { id: 'AFD05_BATAS_2023', name: 'AFD05 - Batas 2023', file: '1KSA_AFD05_TBM2023_BATAS', type: 'batas' },
+                { id: 'AFD05_BLOK_2023', name: 'AFD05 - Blok 2023', file: '1KSA_AFD05_TBM2023_BLOK', type: 'blok' },
+                { id: 'AFD06_BATAS_2023', name: 'AFD06 - Batas 2023', file: '1KSA_AFD06_TBM2023_BATAS', type: 'batas' },
+                { id: 'AFD06_BLOK_2023', name: 'AFD06 - Blok 2023', file: '1KSA_AFD06_TBM2023_BLOK', type: 'blok' },
+                { id: 'AFD07_BATAS_2022', name: 'AFD07 - Batas 2022', file: '1KSA_AFD07_TBM2022_BATAS', type: 'batas' },
+                { id: 'AFD07_BATAS_2023', name: 'AFD07 - Batas 2023', file: '1KSA_AFD07_TBM2023_BATAS', type: 'batas' },
+                { id: 'AFD07_BLOK_2023', name: 'AFD07 - Blok 2023', file: '1KSA_AFD07_TBM2023_BLOK', type: 'blok' }
+            ];
+            
+            var container = document.getElementById('boundary-layers-container');
+            
+            boundaryDefinitions.forEach(function(boundaryDef) {
+                boundaryLayers[boundaryDef.id] = {
+                    id: boundaryDef.id,
+                    name: boundaryDef.name,
+                    file: boundaryDef.file,
+                    type: boundaryDef.type,
+                    polygons: [],
+                    labels: [],
+                    visible: true,
+                    loaded: false
+                };
+                
+                var boundaryDiv = document.createElement('div');
+                boundaryDiv.className = 'boundary-layer';
+                boundaryDiv.id = 'boundary-' + boundaryDef.id;
+                
+                var toggleDiv = document.createElement('div');
+                toggleDiv.className = 'boundary-toggle active';
+                toggleDiv.dataset.boundaryId = boundaryDef.id;
+                
+                var nameDiv = document.createElement('div');
+                nameDiv.className = 'boundary-name';
+                var icon = boundaryDef.type === 'batas' ? 'fa-draw-polygon' : 'fa-th';
+                nameDiv.innerHTML = '<i class="fas ' + icon + '"></i> ' + boundaryDef.name;
+                
+                var statusDiv = document.createElement('div');
+                statusDiv.className = 'boundary-status';
+                
+                toggleDiv.appendChild(nameDiv);
+                toggleDiv.appendChild(statusDiv);
+                boundaryDiv.appendChild(toggleDiv);
+                container.appendChild(boundaryDiv);
+                
+                toggleDiv.addEventListener('click', function() {
+                    var boundaryId = this.dataset.boundaryId;
+                    toggleBoundaryLayer(boundaryId);
+                });
+            });
+        }
+
+        // Toggle boundary layer visibility
+        function toggleBoundaryLayer(boundaryId) {
+            var boundary = boundaryLayers[boundaryId];
+            var toggleDiv = document.querySelector('[data-boundary-id="' + boundaryId + '"]');
+            var statusDiv = toggleDiv.querySelector('.boundary-status');
+            
+            if (!boundary.loaded) {
+                loadBoundaryShapefile(boundary);
+                statusDiv.classList.add('loaded');
+            } else {
+                boundary.visible = !boundary.visible;
+                
+                if (boundary.visible) {
+                    toggleDiv.classList.add('active');
+                    boundary.polygons.forEach(function(polygon) {
+                        polygon.setMap(map);
+                    });
+                    
+                    var currentZoom = map.getZoom();
+                    boundary.labels.forEach(function(label) {
+                         var isBlokLayer = boundary.type === 'blok';
+                         if ((isBlokLayer && currentZoom >= 15) || (!isBlokLayer && currentZoom <= 14)) {
+                            label.setMap(map);
+                         }
+                    });
+                } else {
+                    toggleDiv.classList.remove('active');
+                    boundary.polygons.forEach(function(polygon) {
+                        polygon.setMap(null);
+                    });
+                    
+                    boundary.labels.forEach(function(label) {
+                        label.setMap(null);
+                    });
+                }
+            }
+        }
+
+        // Load boundary shapefile
+        function loadBoundaryShapefile(boundary) {
+            var baseUrl = window.location.origin;
+            var zipUrl = baseUrl + '/batas/' + boundary.file + '.zip';
+            
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            shp(zipUrl).then(function(geojson) {
+                processBoundaryShapefileData(boundary, geojson);
+                
+                var toggleDiv = document.querySelector('[data-boundary-id="' + boundary.id + '"]');
+                toggleDiv.classList.add('active');
+                
+                boundary.loaded = true;
+                boundary.visible = true;
+                
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }).catch(function(error) {
+                console.error('Error loading boundary shapefile:', error);
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                var toggleDiv = document.querySelector('[data-boundary-id="' + boundary.id + '"]');
+                var statusDiv = toggleDiv.querySelector('.boundary-status');
+                
+                statusDiv.style.background = '#e74c3c';
+                statusDiv.title = 'Error: ' + error.message;
+            });
+        }
+
+        // Process boundary shapefile data
+        function processBoundaryShapefileData(boundary, geojson) {
+            geojson.features.forEach(function(feature) {
+                if (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon') {
+                    var coords = feature.geometry.coordinates;
+                    var paths = [];
+                    
+                    if (feature.geometry.type === 'Polygon') {
+                        var path = coords[0].map(function(coord) {
+                            return new google.maps.LatLng(coord[1], coord[0]);
+                        });
+                        paths.push(path);
+                    } else if (feature.geometry.type === 'MultiPolygon') {
+                        coords.forEach(function(polygon) {
+                            var path = polygon[0].map(function(coord) {
+                                return new google.maps.LatLng(coord[1], coord[0]);
+                            });
+                            paths.push(path);
+                        });
+                    }
+
+                    var polygonColor = '#cccccc';
+                    if (boundary.type === 'blok' && feature.properties.BLOK) {
+                        polygonColor = stringToColor(feature.properties.BLOK);
+                    } else if (boundary.type === 'batas' && feature.properties.AFDELING) {
+                        polygonColor = stringToColor(feature.properties.AFDELING);
+                    }
+
+                    var polygon = new google.maps.Polygon({
+                        paths: paths,
+                        strokeColor: polygonColor,
+                        strokeOpacity: 0.9,
+                        strokeWeight: boundary.type === 'batas' ? 2 : 1,
+                        fillColor: polygonColor,
+                        fillOpacity: 0.4,
+                        title: boundary.name + (feature.properties && feature.properties.NAME ? ' - ' + feature.properties.NAME : ''),
+                        zIndex: boundary.type === 'batas' ? 1 : 2
+                    });
+
+                    polygon.addListener('click', function(event) {
+                        var infoWindow = new google.maps.InfoWindow({
+                            content: '<div style="padding: 5px;"><h4>' + boundary.name + '</h4>' +
+                                     '<p>Tipe: ' + (boundary.type === 'batas' ? 'Batas AFD' : 'Blok') + '</p>' +
+                                     (feature.properties ? '<p>Properti: ' + JSON.stringify(feature.properties) + '</p>' : '') +
+                                     '</div>',
+                            position: event.latLng
+                        });
+                        infoWindow.open(map);
+                    });
+
+                    polygon.setMap(map);
+                    boundary.polygons.push(polygon);
+
+                    var currentZoom = map.getZoom();
+                    var labelText = '';
+                    var shouldShowLabel = false;
+
+                    if (boundary.type === 'blok' && feature.properties.BLOK) {
+                        labelText = feature.properties.BLOK;
+                        if (currentZoom >= 15) {
+                            shouldShowLabel = true;
+                        }
+                    } else if (boundary.type === 'batas' && feature.properties.AFDELING) {
+                        labelText = feature.properties.AFDELING;
+                        if (currentZoom <= 14) {
+                            shouldShowLabel = true;
+                        }
+                    }
+
+                    if (labelText) {
+                        var bounds = new google.maps.LatLngBounds();
+                        paths[0].forEach(function(latlng) {
+                            bounds.extend(latlng);
+                        });
+                        var center = bounds.getCenter();
+
+                        var labelMarker = createLabel(center, labelText);
+                        
+                        if (shouldShowLabel) {
+                            labelMarker.setMap(map);
+                        } else {
+                            labelMarker.setMap(null);
+                        }
+                        
+                        boundary.labels.push(labelMarker);
+                    }
+                }
+            });
+        }
+
+        // Toggle tree layer visibility
+        function toggleTreeLayer(layerId) {
+            var layer = treeLayers[layerId];
+            var toggleBtn = document.querySelector('[data-layer-id="' + layerId + '"]');
+            var infoDiv = document.getElementById('info-' + layerId);
+            
+            if (!layer.loaded) {
+                loadShapefile(layer);
+                toggleBtn.textContent = 'Memuat...';
+                toggleBtn.disabled = true;
+            } else {
+                layer.visible = !layer.visible;
+                
+                if (layer.visible) {
+                    toggleBtn.textContent = 'Sembunyikan';
+                    toggleBtn.classList.add('active');
+                    if (markerClusterers[layerId]) {
+                        markerClusterers[layerId].setMap(map);
+                    }
+                } else {
+                    toggleBtn.textContent = 'Tampilkan';
+                    toggleBtn.classList.remove('active');
+                    if (markerClusterers[layerId]) {
+                        markerClusterers[layerId].setMap(null);
+                    }
+                }
+                
+                updateTreeCount();
+            }
+        }
+
+        // Load shapefile
+        function loadShapefile(layer) {
+            var baseUrl = window.location.origin;
+            var shpUrl = baseUrl + '/pohon/' + layer.file + '.zip';
+            
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            shp(shpUrl).then(function(geojson) {
+                processShapefileData(layer, geojson);
+                
+                var toggleBtn = document.querySelector('[data-layer-id="' + layer.id + '"]');
+                var infoDiv = document.getElementById('info-' + layer.id);
+                
+                toggleBtn.textContent = 'Sembunyikan';
+                toggleBtn.disabled = false;
+                toggleBtn.classList.add('active');
+                
+                infoDiv.textContent = layer.count + ' pohon';
+                
+                layer.loaded = true;
+                layer.visible = true;
+                
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                updateTreeCount();
+            }).catch(function(error) {
+                console.error('Error loading shapefile:', error);
+                tryLoadingIndividualFiles(layer);
+            });
+        }
+
+        // Try loading individual files if zip failed
+        function tryLoadingIndividualFiles(layer) {
+            var baseUrl = window.location.origin;
+            var shpUrl = baseUrl + '/pohon/' + layer.file + '.shp';
+            var dbfUrl = baseUrl + '/pohon/' + layer.file + '.dbf';
+            
+            Promise.all([
+                fetch(shpUrl).then(response => response.arrayBuffer()),
+                fetch(dbfUrl).then(response => response.arrayBuffer())
+            ]).then(function(buffers) {
+                shp(buffers[0], buffers[1]).then(function(geojson) {
+                    processShapefileData(layer, geojson);
+                    
+                    var toggleBtn = document.querySelector('[data-layer-id="' + layer.id + '"]');
+                    var infoDiv = document.getElementById('info-' + layer.id);
+                    
+                    toggleBtn.textContent = 'Sembunyikan';
+                    toggleBtn.disabled = false;
+                    toggleBtn.classList.add('active');
+                    
+                    infoDiv.textContent = layer.count + ' pohon';
+                    
+                    layer.loaded = true;
+                    layer.visible = true;
+                    
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    
+                    updateTreeCount();
+                }).catch(function(error) {
+                    console.error('Error processing shapefile:', error);
+                    handleShapefileError(layer, error);
+                });
+            }).catch(function(error) {
+                console.error('Error fetching files:', error);
+                handleShapefileError(layer, error);
+            });
+        }
+
+        // Handle shapefile error
+        function handleShapefileError(layer, error) {
+            var toggleBtn = document.querySelector('[data-layer-id="' + layer.id + '"]');
+            var infoDiv = document.getElementById('info-' + layer.id);
+            
+            toggleBtn.textContent = 'Muat';
+            toggleBtn.disabled = false;
+            
+            infoDiv.textContent = 'Error: ' + error.message;
+            
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }
+
+        // Process shapefile data
+        function processShapefileData(layer, geojson) {
+            var markers = [];
+            
+            geojson.features.forEach(function(feature) {
+                if (feature.geometry.type === 'Point') {
+                    var coords = feature.geometry.coordinates;
+                    var latLng = new google.maps.LatLng(coords[1], coords[0]);
+                    
+                    var konpokok = feature.properties && feature.properties.KONPOKOK ? 
+                                  feature.properties.KONPOKOK.toLowerCase() : 'normal';
+                    
+                    var markerColor = getMarkerColor(konpokok);
+                    
+                    // Update condition counts
+                    if (layer.conditionCounts[konpokok] !== undefined) {
+                        layer.conditionCounts[konpokok]++;
+                        treeConditionCounts[konpokok]++;
+                    }
+                    
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 1.5,
+                            fillColor: markerColor,
+                            fillOpacity: 0.8,
+                            strokeColor: '#ffffff',
+                            strokeWeight: 0.5
+                        },
+                        title: layer.name + ' - ' + (feature.properties && feature.properties.NAME ? feature.properties.NAME : 'Pohon') + 
+                               ' (' + konpokok + ')',
+                        zIndex: 10
+                    });
+                    
+                    marker.addListener('click', function() {
+                        var infoWindow = new google.maps.InfoWindow({
+                            content: '<div style="padding: 5px;"><h4>' + layer.name + '</h4>' +
+                                     '<p>Posisi: ' + coords[1].toFixed(6) + ', ' + coords[0].toFixed(6) + '</p>' +
+                                     '<p>Kondisi: <span style="font-weight:bold;color:' + markerColor + '">' + konpokok + '</span></p>' +
+                                     (feature.properties ? '<p>Properti: ' + JSON.stringify(feature.properties) + '</p>' : '') +
+                                     '</div>'
+                        });
+                        infoWindow.open(map, marker);
+                    });
+                    
+                    markers.push(marker);
+                    layer.count++;
+                }
+            });
+            
+            // Create a marker clusterer for this layer
+            if (markers.length > 0) {
+                var clusterStyles = [
+                    {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+                            '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">' +
+                            '<circle cx="20" cy="20" r="18" fill="' + (layer.year === '2022' ? 'rgba(52, 152, 219, 0.8)' : 'rgba(39, 174, 96, 0.8)') + '" stroke="white" stroke-width="2"/>' +
+                            '<text x="20" y="25" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">titik</text>' +
+                            '</svg>'
+                        ),
+                        height: 40,
+                        width: 40,
+                        textColor: 'white',
+                        textSize: 12
+                    }
+                ];
+                
+                markerClusterers[layer.id] = new MarkerClusterer(map, markers, {
+                    styles: clusterStyles,
+                    gridSize: 60,
+                    minimumClusterSize: 5,
+                    maxZoom: 18
+                });
+                
+                layer.markers = markers;
+            }
+            
+            // Update tree condition counts in the legend
+            updateTreeConditionCounts();
+        }
+
+        // Load all tree layers
+        function loadAllTreeLayers() {
+            var layerIds = Object.keys(treeLayers);
+            var loadedCount = 0;
+            
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            function loadNextLayer() {
+                if (loadedCount < layerIds.length) {
+                    var layerId = layerIds[loadedCount];
+                    var layer = treeLayers[layerId];
+                    
+                    if (!layer.loaded) {
+                        loadShapefile(layer);
+                    }
+                    
+                    loadedCount++;
+                    setTimeout(loadNextLayer, 500);
+                } else {
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                }
+            }
+            
+            loadNextLayer();
+        }
+
+        // Load all boundary layers automatically
+        function loadAllBoundaryLayers() {
+            var boundaryIds = Object.keys(boundaryLayers);
+            var loadedCount = 0;
+            
+            function loadNextBoundary() {
+                if (loadedCount < boundaryIds.length) {
+                    var boundaryId = boundaryIds[loadedCount];
+                    var boundary = boundaryLayers[boundaryId];
+                    
+                    if (!boundary.loaded) {
+                        loadBoundaryShapefile(boundary);
+                    }
+                    
+                    loadedCount++;
+                    setTimeout(loadNextBoundary, 200);
+                }
+            }
+            
+            loadNextBoundary();
+        }
+
+        // Update tree count
+        function updateTreeCount() {
+            var visibleCount = 0;
+            var totalCount = 0;
+            
+            Object.keys(treeLayers).forEach(function(layerId) {
+                var layer = treeLayers[layerId];
+                totalCount += layer.count;
+                
+                if (layer.visible) {
+                    visibleCount += layer.count;
+                }
+            });
+            
+            document.getElementById('tree-count').textContent = visibleCount;
+            document.getElementById('total-tree-count').textContent = totalCount;
+            totalTreeCount = totalCount;
+        }
+
+        // Setup collapse buttons
+        function setupCollapseButtons() {
+            // Tree layers collapse
+            var treeLayersCollapse = document.getElementById('tree-layers-collapse');
+            var treeLayersContent = document.getElementById('tree-layers-content');
+            
+            treeLayersCollapse.addEventListener('click', function() {
+                this.classList.toggle('collapsed');
+                treeLayersContent.classList.toggle('collapsed');
+            });
+            
+            // Boundary layers collapse
+            var boundaryLayersCollapse = document.getElementById('boundary-layers-collapse');
+            var boundaryLayersContent = document.getElementById('boundary-layers-content');
+            
+            boundaryLayersCollapse.addEventListener('click', function() {
+                this.classList.toggle('collapsed');
+                boundaryLayersContent.classList.toggle('collapsed');
+            });
+            
+            // Legend collapse
+            var legendCollapse = document.getElementById('legend-collapse');
+            var legendContent = document.getElementById('legend-content');
+            
+            legendCollapse.addEventListener('click', function() {
+                this.classList.toggle('collapsed');
+                legendContent.classList.toggle('collapsed');
+            });
+        }
+
+        // Function to toggle all panels
+        function toggleAllPanels() {
+            var controlsPanel = document.querySelector('.controls-panel');
+            var infoPanel = document.querySelector('.info-panel');
+            var legendPanel = document.querySelector('.legend-panel');
+            var toggleIcon = document.getElementById('toggle-icon');
+            var toggleText = document.getElementById('toggle-text');
+            
+            var isHidden = controlsPanel.classList.contains('hidden');
+            
+            if (isHidden) {
+                controlsPanel.classList.remove('hidden');
+                infoPanel.classList.remove('hidden');
+                legendPanel.classList.remove('hidden');
+                
+                toggleIcon.className = 'fas fa-eye-slash';
+                toggleText.textContent = 'Sembunyikan Panel';
+            } else {
+                controlsPanel.classList.add('hidden');
+                infoPanel.classList.add('hidden');
+                legendPanel.classList.add('hidden');
+                
+                toggleIcon.className = 'fas fa-eye';
+                toggleText.textContent = 'Tampilkan Panel';
+            }
+        }
+
+        // Function to calculate centroid of LatLngBounds
+        function calculateCentroid(bounds) {
+            var ne = bounds.getNorthEast();
+            var sw = bounds.getSouthWest();
+            
+            var lat = (ne.lat() + sw.lat()) / 2;
+            var lng = (ne.lng() + sw.lng()) / 2;
+            
+            return new google.maps.LatLng(lat, lng);
+        }
+
+        // Main load function
         function load() {
             var options = {
                 center: mapBounds.getCenter(),
@@ -1230,108 +2241,126 @@
             // Calculate and add centroid marker for "Kebun Silau Dunia"
             var centroid = calculateCentroid(mapBounds);
             
-// Create custom marker for centroid with auto-adjusting label background
-function createCustomMarkerWithLabel(map, position, title, labelText) {
-    // Create a div to measure text width
-    var textMeasureDiv = document.createElement('div');
-    textMeasureDiv.style.position = 'absolute';
-    textMeasureDiv.style.visibility = 'hidden';
-    textMeasureDiv.style.height = 'auto';
-    textMeasureDiv.style.width = 'auto';
-    textMeasureDiv.style.whiteSpace = 'nowrap';
-    textMeasureDiv.style.fontWeight = 'bold';
-    textMeasureDiv.style.fontSize = '14px';
-    textMeasureDiv.style.padding = '0 8px';
-    textMeasureDiv.innerHTML = labelText;
-    document.body.appendChild(textMeasureDiv);
-    
-    // Get the text width
-    var textWidth = textMeasureDiv.offsetWidth;
-    document.body.removeChild(textMeasureDiv);
-    
-    // Add padding to the width
-    var labelWidth = textWidth + 16; // 8px padding on each side
-    var labelHeight = 28; // Fixed height for the label
-    
-    // Create SVG for the marker icon with label
-    var svgLabel = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="${labelWidth}" height="${labelHeight + 20}" viewBox="0 0 ${labelWidth} ${labelHeight + 20}">
-            <rect x="0" y="0" width="${labelWidth}" height="${labelHeight}" rx="4" ry="4" fill="rgba(248, 248, 255, 0.9)" stroke="#2c3e50" stroke-width="1"/>
-            <text x="${labelWidth/2}" y="18" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">${labelText}</text>
-            <circle cx="${labelWidth/2}" cy="${labelHeight + 10}" r="6" fill="#e74c3c" stroke="#ffffff" stroke-width="2"/>
-        </svg>
-    `;
-    
-    // Create the marker
-    var marker = new google.maps.Marker({
-        position: position,
-        map: map,
-        title: title,
-        icon: {
-            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgLabel),
-            scaledSize: new google.maps.Size(labelWidth, labelHeight + 20),
-            anchor: new google.maps.Point(labelWidth/2, labelHeight + 20)
-        }
-    });
-    
-    return marker;
-}
+            // Create custom marker for centroid with auto-adjusting label background
+            function createCustomMarkerWithLabel(map, position, title, labelText) {
+                var textMeasureDiv = document.createElement('div');
+                textMeasureDiv.style.position = 'absolute';
+                textMeasureDiv.style.visibility = 'hidden';
+                textMeasureDiv.style.height = 'auto';
+                textMeasureDiv.style.width = 'auto';
+                textMeasureDiv.style.whiteSpace = 'nowrap';
+                textMeasureDiv.style.fontWeight = 'bold';
+                textMeasureDiv.style.fontSize = '14px';
+                textMeasureDiv.style.padding = '0 8px';
+                textMeasureDiv.innerHTML = labelText;
+                document.body.appendChild(textMeasureDiv);
+                
+                var textWidth = textMeasureDiv.offsetWidth;
+                document.body.removeChild(textMeasureDiv);
+                
+                var labelWidth = textWidth + 16;
+                var labelHeight = 28;
+                
+                var svgLabel = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="${labelWidth}" height="${labelHeight + 20}" viewBox="0 0 ${labelWidth} ${labelHeight + 20}">
+                        <rect x="0" y="0" width="${labelWidth}" height="${labelHeight}" rx="4" ry="4" fill="rgba(248, 248, 255, 0.9)" stroke="#2c3e50" stroke-width="1"/>
+                        <text x="${labelWidth/2}" y="18" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#2c3e50">${labelText}</text>
+                        <circle cx="${labelWidth/2}" cy="${labelHeight + 10}" r="6" fill="#e74c3c" stroke="#ffffff" stroke-width="2"/>
+                    </svg>
+                `;
+                
+                var marker = new google.maps.Marker({
+                    position: position,
+                    map: map,
+                    title: title,
+                    icon: {
+                        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgLabel),
+                        scaledSize: new google.maps.Size(labelWidth, labelHeight + 20),
+                        anchor: new google.maps.Point(labelWidth/2, labelHeight + 20)
+                    }
+                });
+                
+                return marker;
+            }
 
-// Use the custom function to create the centroid marker
-centroidMarker = createCustomMarkerWithLabel(
-    map, 
-    centroid, 
-    "Kebun Silau Dunia", 
-    "Kebun Silau Dunia"
-);
+            centroidMarker = createCustomMarkerWithLabel(
+                map, 
+                centroid, 
+                "Kebun Silau Dunia", 
+                "Kebun Silau Dunia"
+            );
 
-// Create info window for centroid
-var centroidInfoWindow = new google.maps.InfoWindow({
-    content: "<div style='padding: 10px;'><h3 style='color: #2c3e50; margin-top: 0;'>Kebun Silau Dunia</h3><p style='margin: 5px 0;'>Centroid area perkebunan</p><p style='margin: 5px 0; font-size: 12px; color: #7f8c8d;'>Koordinat: " + centroid.lat().toFixed(6) + ", " + centroid.lng().toFixed(6) + "</p></div>"
-});
+            var centroidInfoWindow = new google.maps.InfoWindow({
+                content: "<div style='padding: 10px;'><h3 style='color: #2c3e50; margin-top: 0;'>Kebun Silau Dunia</h3><p style='margin: 5px 0;'>Centroid area perkebunan</p><p style='margin: 5px 0; font-size: 12px; color: #7f8c8d;'>Koordinat: " + centroid.lat().toFixed(6) + ", " + centroid.lng().toFixed(6) + "</p></div>"
+            });
 
-// Add click listener to centroid marker
-centroidMarker.addListener('click', function() {
-    centroidInfoWindow.open(map, centroidMarker);
-});
+            centroidMarker.addListener('click', function() {
+                centroidInfoWindow.open(map, centroidMarker);
+            });
 
-// Open info window by default
-centroidInfoWindow.open(map, centroidMarker);
+            centroidInfoWindow.open(map, centroidMarker);
 
-google.maps.event.addListenerOnce(map, "projection_changed", function() {
-    map.setZoom(getZoomByBounds(map, mapBounds));
-});
+            google.maps.event.addListenerOnce(map, "projection_changed", function() {
+                map.setZoom(getZoomByBounds(map, mapBounds));
+            });
 
-overlay = new CustomTileOverlay(map, initialOpacity);
-overlay.show();
+            overlay = new CustomTileOverlay(map, initialOpacity);
+            overlay.show();
 
-google.maps.event.addListener(map, 'tilesloaded', function() {
-    overlay.deleteHiddenTiles(map.getZoom());
-});
+            google.maps.event.addListener(map, 'tilesloaded', function() {
+                overlay.deleteHiddenTiles(map.getZoom());
+            });
 
-createOpacityControl(map, initialOpacity);
-            // Initialize Three.js after map is ready
+            createOpacityControl(map, initialOpacity);
+            
+            setupCollapseButtons();
+            
+            initializeTreeLayers();
+            initializeBoundaryLayers();
+            
             setTimeout(function() {
-            //     threeManager = new ThreeManager(map);
+                loadAllBoundaryLayers();
+            }, 2000);
+
+            // Add event listener for zoom changes
+            google.maps.event.addListener(map, 'zoom_changed', function() {
+                var currentZoom = map.getZoom();
                 
-            //     // Setup event listeners
-            //     document.getElementById('toggle-3d').addEventListener('click', function() {
-            //         threeManager.toggle3DView();
-            //     });
-                
-            //     document.getElementById('toggle-trees').addEventListener('click', function() {
-            //         threeManager.toggleTrees();
-            //     });
-                
-            //     document.getElementById('animate-growth').addEventListener('click', function() {
-            //         threeManager.animateGrowth();
-            //     });
-                
-            //     document.getElementById('reset-view').addEventListener('click', function() {
-            //         threeManager.resetView();
-            //     });
-                
-                // Hide loading spinner
+                Object.keys(boundaryLayers).forEach(function(boundaryId) {
+                    var boundary = boundaryLayers[boundaryId];
+                    if (!boundary.loaded || !boundary.visible) return;
+
+                    boundary.labels.forEach(function(label) {
+                        var isBlokLayer = boundary.type === 'blok';
+                        
+                        if (isBlokLayer) {
+                            if (currentZoom >= 15) {
+                                label.setMap(map);
+                            } else {
+                                label.setMap(null);
+                            }
+                        } else {
+                            if (currentZoom <= 14) {
+                                label.setMap(map);
+                            } else {
+                                label.setMap(null);
+                            }
+                        }
+                    });
+                });
+            });
+            
+            document.getElementById('load-all-trees').addEventListener('click', function() {
+                loadAllTreeLayers();
+            });
+            
+            document.getElementById('toggle-panels').addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleAllPanels();
+            });
+            
+            setTimeout(function() {
+                threeManager = new ThreeManager(map);
                 document.getElementById('loadingSpinner').style.display = 'none';
             }, 1000);
             
@@ -1347,25 +2376,12 @@ createOpacityControl(map, initialOpacity);
                     document.getElementById('tree-count').textContent = threeManager.getTreeCount();
                 }
                 
-                // Update last update time
                 var now = new Date();
                 var timeString = now.getHours().toString().padStart(2, '0') + ':' + 
                                  now.getMinutes().toString().padStart(2, '0') + ':' + 
                                  now.getSeconds().toString().padStart(2, '0');
                 document.getElementById('last-update').textContent = timeString;
             }, 1000);
-        }
-
-        // Function to calculate centroid of LatLngBounds
-        function calculateCentroid(bounds) {
-            var ne = bounds.getNorthEast();
-            var sw = bounds.getSouthWest();
-            
-            // Calculate the center (centroid)
-            var lat = (ne.lat() + sw.lat()) / 2;
-            var lng = (ne.lng() + sw.lng()) / 2;
-            
-            return new google.maps.LatLng(lat, lng);
         }
 
         onresize = function() {
